@@ -1,0 +1,104 @@
+application {
+  config {
+    baseName cvgs,
+    applicationType gateway,
+    packageName se.alten.challenge,
+    serviceDiscoveryType eureka,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    cacheProvider hazelcast,
+    buildTool maven,
+    clientFramework angular,
+    useSass true,
+    testFrameworks [gratling,protractor],
+    enableTranslation true,
+    nativeLanguage en,
+    languages [en,sv]
+  }
+  entities *
+}
+
+application {
+  config {
+    baseName cms,
+    applicationType microservice,
+    packageName se.alten.challenge,
+    serviceDiscoveryType eureka,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    buildTool maven,
+    serverPort 8081,
+    skipUserManagement true,
+    enableTranslation true,
+    nativeLanguage en,
+    languages [en,sv]
+  }
+  entities Customer, Vehicle
+}
+
+application {
+  config {
+    baseName vds,
+    applicationType microservice,
+    packageName se.alten.challenge,
+    serviceDiscoveryType eureka,
+    authenticationType jwt,
+    databaseType mongodb,
+    prodDatabaseType mongodb,
+    devDatabaseType mongodb,
+    cacheProvider no,
+    enableHibernateCache false,
+    buildTool maven,
+    serverPort 8082,
+    skipUserManagement true,
+    enableTranslation true,
+    nativeLanguage en,
+    languages [en,sv]
+  }
+  entities VehicleConnectionStatus, VehicleConnectionStatusHistory, VehicleData
+}
+
+entity Customer {
+    name String required,
+    address String
+}
+
+entity Vehicle {
+    vehicleId String unique required,
+    vehicleRegNo String unique required
+}
+
+relationship ManyToOne {
+    Vehicle{owner(name) required} to Customer
+}
+
+microservice Customer, Vehicle with cms
+
+entity VehicleConnectionStatus {
+   vehicleId String unique required,
+   status ConnectionStatus,
+   lastUpdated Instant
+}
+
+enum ConnectionStatus {
+    CONNECTED, DISCONNECTED
+}
+
+entity VehicleConnectionStatusHistory {
+   vehicleId String required,
+   status String,
+   statusAt Instant
+}
+
+entity VehicleData {
+	vehicleId String required,
+	longitude String,
+	latitude String,
+	speed Double,
+	fuelLevel Double,
+	timeStamp Instant
+}
+
+paginate VehicleData with pagination
+
+microservice VehicleConnectionStatus, VehicleConnectionStatusHistory, VehicleData with vds
