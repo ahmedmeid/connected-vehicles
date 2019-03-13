@@ -68,5 +68,11 @@ Data from this microservice can be imported for further analysis and reports gen
 
 ### Alternate Solution (Serverless Architecture)
 
+An alternative solution is to use Serverless Architecture from AWS 
+
 ![Serverless_Architecture](webresources/img/ServerlessArchitecture.png)
+
+connected vehicles will send data to Amazon IoT platform, and solution will be implemented as Amazon Lambda functions to receive data and store it in data store, and another Lambda function to serve vehicle data and a third one to serve customer data.
+
+Web clients will access the system API's through Amazon API Gateway.
 

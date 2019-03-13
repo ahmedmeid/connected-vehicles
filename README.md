@@ -16,6 +16,9 @@ Full solution description can be found in [Solution Blueprint document](Solution
 * Receiving vehicle data: GPS location, speed, fuel level, ..etc. and storing it in system database.
 * Security using credentials.
 
+## Screenshot
+![screenshot](webresources/img/screenshot.png)
+
 ## Running solution on a local machine in dev mode
 ### Requirements
 
@@ -122,7 +125,7 @@ cd connected-vehicles/vehicles-simulator
 
 ### API documentation
 
-API documentation can be accessed at the web interface url: 
+API documentation can be accessed at the web interface under Administration -> API
 ## Deployment on cloud
 
 #### RequirementsIn addition to build requirements, the following tools are required:
