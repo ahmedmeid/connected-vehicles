@@ -66,6 +66,7 @@ Customer Management micoservice stores customers and vehicles information in a P
 Vehicle Data microservice stores vehicle data received from vehicle devices in MongoDB NoSQL database. Mongo is suitable for heavy writing and big data applications.
 Data from this microservice can be imported for further analysis and reports generation
 
-## Alternate Solution (Serverless Architecture)
+### Alternate Solution (Serverless Architecture)
 
+![Serverless_Architecture](webresources/img/ServerlessArchitecture.png)
 
