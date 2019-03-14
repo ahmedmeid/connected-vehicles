@@ -19,11 +19,11 @@ Gateway microservice incorporates the following components:
 ##### Angular Application
 Angular Application is a web application developed using Angular MVVC Single Page Application Framework by Google. It provides a GUI for the user to register customer and vehicle information, and view the connection status received from Vehicle data stream through websocket in near real time.
 
-##### Zuul Proxy[Netflex Zuul Proxy] (https://github.com/Netflix/zuul) is a front door for all the requests (gatekeeper). It acts as an edge service application. Zuul is built to enable dynamic routing, monitoring, resiliency, and security among the services. It also has the ability to dynamically route requests as needed.
+##### Zuul Proxy[Netflex Zuul Proxy](https://github.com/Netflix/zuul) is a front door for all the requests (gatekeeper). It acts as an edge service application. Zuul is built to enable dynamic routing, monitoring, resiliency, and security among the services. It also has the ability to dynamically route requests as needed.
 
 ##### Ribbon
 
-[Hystrix Ribbon] (https://github.com/Netflix/Hystrix) is a latency and fault tolerance library designed to isolate points of access to remote systems, services, and third-party libraries, stop cascading failures; and enable resilience in complex distributed systems where failure is inevitable.
+[Hystrix Ribbon](https://github.com/Netflix/Hystrix) is a latency and fault tolerance library designed to isolate points of access to remote systems, services, and third-party libraries, stop cascading failures; and enable resilience in complex distributed systems where failure is inevitable.
 
 ##### Vehicle Data Stream
 
@@ -36,7 +36,7 @@ Vehicle Data Adapter is a Python application that consumes MQTT messages and cal
 #### JHipster Registry
 
 ##### Netflex Eureka server
-[Eureka] (https://github.com/Netflix/eureka) consists of the following:
+[Eureka](https://github.com/Netflix/eureka) consists of the following:
 
 The Eureka server
 
@@ -53,7 +53,7 @@ Eureka acts as a middle tier load balancer that helps to load balance the host
 
 ##### Spring Cloud Config server
 
-[Spring cloud config server] (https://github.com/spring-cloud/spring-cloud-config) provides server and client-side support for external configuration.
+[Spring cloud config server](https://github.com/spring-cloud/spring-cloud-config) provides server and client-side support for external configuration.
 
 With the cloud config server, we have a central place to manage all our external properties across all environments. The concept is similar to Spring-based environment property source abstractions on both client and server. They fit for any application running in any language.”
 
@@ -68,11 +68,11 @@ Data from this microservice can be imported for further analysis and reports gen
 
 ### Alternate Solution (Serverless Architecture)
 
-An alternative solution is to use Serverless Architecture from AWS 
+An alternative solution is Serverless Architecture using AWS 
 
 ![Serverless_Architecture](webresources/img/ServerlessArchitecture.png)
 
-connected vehicles will send data to Amazon IoT platform, and solution will be implemented as Amazon Lambda functions to receive data and store it in data store, and another Lambda function to serve vehicle data and a third one to serve customer data.
+Connected vehicles will send data to Amazon IoT platform, and solution will be implemented as Amazon Lambda functions to receive data and store it in data store, and another Lambda function to serve vehicle data and a third one to serve customer data.
 
 Web clients will access the system API's through Amazon API Gateway.
 
