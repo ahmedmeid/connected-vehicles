@@ -31,10 +31,10 @@ class StateServer(mqtt.Client):
 
     def connect(self):
         logger.info('connecting...')
-        self.username_pw_set(self._settings['user'], self._settings['pass'])
+        self.username_pw_set(self._settings['mqtt_broker_username'], self._settings['mqtt_broker_password'])
 
-        super(StateServer, self).connect(self._settings['host'],
-                                         self._settings['port'],
+        super(StateServer, self).connect(self._settings['mqtt_broker_hostname'],
+                                         self._settings['mqtt_broker_port'],
                                          keepalive=self._keepalive)
         self.loop_start()
 
@@ -71,17 +71,15 @@ class StateServer(mqtt.Client):
             for device_id in self._device_ids:
                 logger.info('pinging device: {}'.format(device_id))
                 self.publish('pings/{d_id}'.format(d_id=device_id), '', qos=2)
-
-            url='http://localhost:8080/api/authenticate'
             request = {
-                            "username": "user",
-                            "password": "user",
+                            "username": self._settings['authorization_username'],
+                            "password": self._settings['authorization_password'],
                             "rememberMe": True
                             }
             jout = json.dumps(request)
             headers = {'Content-type': 'application/json'}
             print("request ",jout)
-            response = requests.post(url,headers=headers,data=jout)
+            response = requests.post(self._settings['authorization_url'],headers=headers,data=jout)
             if response.status_code == 200:
                 token = response.content.decode('utf-8')
                 token_json = json.loads(token)
@@ -109,8 +107,7 @@ class StateServer(mqtt.Client):
         print("hi from update_status ")
         msg.payload = msg.payload.decode("utf-8")
         state = msg.payload
-        print("status: ",state)
-        url = 'http://localhost:8080/vehiclemanagement/api/vehicle-connection-statuses'
+        print("status: ",state) 
         data = {
             "id": device_id,
             "status": state,
@@ -119,25 +116,19 @@ class StateServer(mqtt.Client):
         jout = json.dumps(data)
         print("data ", jout)
         headers = {'Content-type': 'application/json', 'Authorization' : 'Bearer '+self.id_token}
-        response = requests.put(url, headers=headers, data=jout)
+        response = requests.put(self._settings['status_service_url'], headers=headers, data=jout)
         print("response ", response)
 
     def send_data(self, msg):
         msg.payload = msg.payload.decode("utf-8")
         data = msg.payload
-        url = 'http://localhost:8080/vehiclemanagement/api/vehicle-data'
         headers = {'Content-type': 'application/json', 'Authorization' : 'Bearer '+self.id_token}
-        response = requests.post(url, headers=headers, data=data)
+        response = requests.post(self._settings['data_service_url'], headers=headers, data=data)
         print("response ", response)
 
 if __name__ == '__main__':
-
-    settings = {
-        'host': 'localhost',
-        'port': 1883,
-        'user': '',
-        'pass': '',
-    }
+    with open('config.json') as config_file:
+    	settings = json.load(config_file)
 
     state_server = StateServer(settings, device_ids=['YS2R4X20005399401','VLUR4X20009093588',
                                                      'VLUR4X20009048066','YS2R4X20005388011',
