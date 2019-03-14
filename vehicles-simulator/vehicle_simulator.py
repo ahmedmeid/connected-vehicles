@@ -29,7 +29,8 @@ class DeviceStateUpdater(mqtt.Client):
     def connect(self):
         logger.info('connecting...')
         self.username_pw_set(self._settings['mqtt_broker_username'], self._settings['mqtt_broker_password'])
-        self.will_set(self._state_topic, 'DISCONNECTED', qos=2)
+        data = '{ "vehicleId" : "' + self.device_id + '", "status" : "DISCONNECTED", "lastUpdated" : "' + datetime.datetime.now().isoformat() + 'Z"}';
+        self.will_set(self._state_topic, data, qos=2)
 
         super(DeviceStateUpdater, self).connect(self._settings['mqtt_broker_hostname'],
                                                 self._settings['mqtt_broker_port'],
@@ -53,7 +54,8 @@ class DeviceStateUpdater(mqtt.Client):
                 return
 
         # inform the state server that the device will disconnect
-        self.publish(self._state_topic, 'DISCONNECTED', qos=2)
+        #self.publish(self._state_topic, 'DISCONNECTED', qos=2)
+        self.publishStatus('DISCONNECTED')
         # sleep for 3 secs so we receive TCP acknowledgement for the above message
         sleep(3)
         super(DeviceStateUpdater, self).disconnect()
@@ -66,7 +68,8 @@ class DeviceStateUpdater(mqtt.Client):
             logger.info('successful connection')
 
             # inform the state server that the device is connected
-            self.publish(self._state_topic, 'CONNECTED', qos=2)
+            #self.publish(self._state_topic, 'CONNECTED', qos=2)
+            self.publishStatus('CONNECTED')
             # subscribe to the ping topic so when the server pings the device can respond with a pong
             self.subscribe(self._ping_topic, qos=2)
 
@@ -82,7 +85,8 @@ class DeviceStateUpdater(mqtt.Client):
         # when message is received from the ping topic respond with pong ('connected' state)
         if msg.topic == self._ping_topic:
             logger.info('received ping. responding with state')
-            self.publish(self._state_topic, 'CONNECTED', qos=2)
+            #self.publish(self._state_topic, 'CONNECTED', qos=2)
+            self.publishStatus('CONNECTED')
 
     def sendData(self):
         slat = 24.734659
@@ -100,9 +104,13 @@ class DeviceStateUpdater(mqtt.Client):
             "vehicleId": self.device_id
         }
         jout=json.dumps(vehicle_data)
-        print("data ", jout)
+        print("vehicle data: ", jout)
         self.publish(self._vehicle_data_topic, jout, qos=2)
 
+    def publishStatus(self, status):
+        data = '{ "vehicleId" : "' + self.device_id + '", "status" : "' + status + '", "lastUpdated" : "' + datetime.datetime.now().isoformat() + 'Z"}';
+        print("vehicle status: ", data)
+        self.publish(self._state_topic, data, qos=2)
 
 
 if __name__ == '__main__':

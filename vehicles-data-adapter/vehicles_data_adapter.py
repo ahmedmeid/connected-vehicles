@@ -104,19 +104,10 @@ class StateServer(mqtt.Client):
             self.send_data(msg)
 
     def update_status(self, device_id, msg):
-        print("hi from update_status ")
         msg.payload = msg.payload.decode("utf-8")
-        state = msg.payload
-        print("status: ",state) 
-        data = {
-            "id": device_id,
-            "status": state,
-            "lastUpdated": datetime.datetime.now().isoformat()+"Z"
-        }
-        jout = json.dumps(data)
-        print("data ", jout)
+        data = msg.payload
         headers = {'Content-type': 'application/json', 'Authorization' : 'Bearer '+self.id_token}
-        response = requests.put(self._settings['status_service_url'], headers=headers, data=jout)
+        response = requests.put(self._settings['status_service_url'], headers=headers, data=data)
         print("response ", response)
 
     def send_data(self, msg):
