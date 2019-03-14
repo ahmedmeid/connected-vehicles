@@ -78,6 +78,7 @@ Run gateway service
 
 
 ```
+export MQTT_BROKER_URI=tcp://localhost:1883
 cd cvgs
 ./mvnw
 ```
