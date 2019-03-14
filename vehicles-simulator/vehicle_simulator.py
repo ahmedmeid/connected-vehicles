@@ -28,11 +28,11 @@ class DeviceStateUpdater(mqtt.Client):
 
     def connect(self):
         logger.info('connecting...')
-        self.username_pw_set(self._settings['user'], self._settings['pass'])
+        self.username_pw_set(self._settings['mqtt_broker_username'], self._settings['mqtt_broker_password'])
         self.will_set(self._state_topic, 'DISCONNECTED', qos=2)
 
-        super(DeviceStateUpdater, self).connect(self._settings['host'],
-                                                self._settings['port'],
+        super(DeviceStateUpdater, self).connect(self._settings['mqtt_broker_hostname'],
+                                                self._settings['mqtt_broker_port'],
                                                 keepalive=self._keepalive)
         self.loop_start()
 
@@ -106,13 +106,8 @@ class DeviceStateUpdater(mqtt.Client):
 
 
 if __name__ == '__main__':
-
-    settings = {
-        'host': 'localhost',
-        'port': 1883,
-        'user': '',
-        'pass': '',
-    }
+    with open('config.json') as config_file:
+        settings = json.load(config_file)
 
     device_state_updater = DeviceStateUpdater(settings, device_id=str(sys.argv[1]))
     device_state_updater.connect()
