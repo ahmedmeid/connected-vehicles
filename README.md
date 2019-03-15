@@ -146,12 +146,21 @@ cd ../cms
 
 cd ../vds
 ./mvnw package -Pprod verify jib:dockerBuild
+
+cd ../connected-vehicles/vehicles-data-adapter
+
+docker build --tag vda .
+
 ```Push docker images to docker hub
 
 ```
-docker image tag cvgs <docker_account_id>/cvgsdocker push ahmedeidx/cvgs
-docker image tag cms <docker_account_id>/cmsdocker push ahmedeidx/cms
-docker image tag vds <docker_account_id>/vdsdocker push ahmedeidx/vds
+docker image tag cvgs <docker_account_id>/cvgsdocker push <docker_account_id>/cvgs
+docker image tag cms <docker_account_id>/cmsdocker push <docker_account_id>/cms
+docker image tag vds <docker_account_id>/vdsdocker push <docker_account_id>/vds
+
+docker tag vda <docker_account_id>/vda
+docker push <docker_account_id>/vda
+
 ```
 
 Login to your Microsoft Azure account
@@ -178,4 +187,6 @@ Modify the following line in the yaml configuration files:
 ```
 replace ```ahmedeidx``` with your docker account name that you have used to push docker imagesApply projects
 ```cd k8skubectl apply -f registrykubectl apply -f cvgskubectl apply -f cmskubectl apply -f vds
+kubectl apply -f vehicles-data-adapter
+
 ```
