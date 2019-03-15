@@ -114,10 +114,11 @@ cd vds
 
 Open the application url in the browser: [http://localhost:8080](http://localhost:8080)
 
-Start the vehicle data adapter
+Start the vehicle data adapter (it requires Python 3, paho-mqtt, and requests libraries to be installed first)
 
 
 ```
+pip install paho-mqtt requests
 cd connected-vehicles/vehicles-data-adapter
 python3 vehicles_data_adapter.py
 ```
