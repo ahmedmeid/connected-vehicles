@@ -11,9 +11,15 @@ System consists of three main microservices:
 
 Full solution description can be found in [Solution Blueprint document](SolutionBlueprint.md)
 
-Solution is deployed on free tier of Azure Kubernetes Service AKS and accessible at the following URL:
+Solution is deployed on free tier of Azure Kubernetes Service (AKS) and web interface is accessible at the following URL:
 
 [http://23.96.34.45:8080](http://23.96.34.45:8080)
+
+Eclispe Mosquitto MQTT Broker is available on the cloud for vehicles simulators at:
+
+IP Address: 13.92.195.182
+
+Port: 1883
 ## Features
 
 * Showing vehicles connection status in near real time through websockets technology.
