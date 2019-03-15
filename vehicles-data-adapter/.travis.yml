@@ -1,0 +1,11 @@
+os:
+  - linux
+services:
+  - docker
+before_install:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+script:
+  - docker build --tag vda:$TRAVIS_BUILD_ID . 
+  - docker build --tag vda:latest . 
+  - docker push $DOCKER_USERNAME/vda:$TRAVIS_BUILD_ID
+  - docker push $DOCKER_USERNAME/vda:latest
